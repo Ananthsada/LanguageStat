@@ -17,28 +17,4 @@
 #define LightCyan		"\x1b[96m"	
 #define LightWhite		"\x1b[97m"	
 
-typedef  struct
-{
-	unsigned long long size;
-	float percent;
-	const char* lang_name;
-	char zero;
-	const char* color;
-}lang_stat_t;
-
-typedef struct 
-{
-	unsigned long long total_size;
-	lang_stat_t c_stat;
-	lang_stat_t cpp_stat;
-	lang_stat_t sh_stat;
-	lang_stat_t py_stat;
-	lang_stat_t pl_stat;
-	lang_stat_t java_stat;
-	lang_stat_t html_stat;
-	lang_stat_t css_stat;
-	lang_stat_t make_stat;
-	lang_stat_t cmake_stat;
-}project_stat_t;
-
 

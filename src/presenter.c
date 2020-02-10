@@ -1,5 +1,6 @@
 #include <stdio.h> /* for input and output buffer handling */
 
+#include "updatelang.h"
 #include "presenter.h" /* Internal header to declare functions defined in this file */
 #include "user_types.h"	/* Header to declare common user defined types */
 
@@ -7,8 +8,8 @@ extern project_stat_t project_stat;
 
 void present_output()
 {	
-	lang_stat_t* parse_ptr = &project_stat.c_stat;
-	lang_stat_t* end_ptr = &project_stat.cmake_stat;
+	lang_stat_t* parse_ptr = &project_stat.lang_list[LANG_C];
+	lang_stat_t* end_ptr = &project_stat.lang_list[LANG_CMAKE];
 	unsigned int ret_val = 0;
 	unsigned int index = 0;
 	float others = 0.0f;

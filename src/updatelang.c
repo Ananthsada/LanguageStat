@@ -46,7 +46,7 @@ static unsigned int name_hastable_size = sizeof(lang_name_hashtable) / sizeof(la
 
 project_stat_t project_stat = {
 		0,
-		{ 0, 0.0, "C", '\0', Yellow },
+		{ { 0, 0.0, "C", '\0', Yellow },
 		{ 0, 0.0, "C++", '\0', Blue },
 		{ 0, 0.0, "Shell" , '\0', Green },
 		{ 0, 0.0, "Python", '\0', Magenta },
@@ -55,7 +55,7 @@ project_stat_t project_stat = {
 		{ 0, 0.0, "HTML", '\0', LightYellow },
 		{ 0, 0.0, "CSS", '\0', LightBlue },
 		{ 0, 0.0, "Makefile", '\0', LightRed },
-		{ 0, 0.0, "CMakeLists.txt", '\0', LightGreen },
+		{ 0, 0.0, "CMakeLists.txt", '\0', LightGreen }, }
 };
 
 static unsigned int getlanguage_extn_key(const char* extension);
@@ -104,42 +104,42 @@ static unsigned int update_by_extension( const char* file_extension, unsigned in
 	switch( getlanguage_extn_key( extension ) )
 	{
 		case 0:
-			project_stat.c_stat.size = project_stat.c_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_C].size = project_stat.lang_list[LANG_C].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 			
 		case 1:
-			project_stat.cpp_stat.size = project_stat.cpp_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_CPP].size = project_stat.lang_list[LANG_CPP].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 		
 		case 2:
-			project_stat.py_stat.size = project_stat.py_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_PYTHON].size = project_stat.lang_list[LANG_PYTHON].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 						
 		case 3:
-			project_stat.pl_stat.size = project_stat.pl_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_PERL].size = project_stat.lang_list[LANG_PERL].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 						
 		case 4:
-			project_stat.java_stat.size = project_stat.java_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_JAVA].size = project_stat.lang_list[LANG_JAVA].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 												
 		case 5:
-			project_stat.html_stat.size = project_stat.html_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_HTML].size = project_stat.lang_list[LANG_HTML].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 						
 		case 6:
-			project_stat.sh_stat.size = project_stat.sh_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_SHELL].size = project_stat.lang_list[LANG_SHELL].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 									
 		case 7:
-			project_stat.css_stat.size = project_stat.css_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_CSS].size = project_stat.lang_list[LANG_CSS].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 						
@@ -163,12 +163,12 @@ static void update_by_name(const char* file_rel_name, unsigned int name_length, 
 	switch( getlanguage_name_key( file_name_l ) )
 	{
 		case 0:
-			project_stat.make_stat.size = project_stat.make_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_MAKE].size = project_stat.lang_list[LANG_MAKE].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 			
 		case 1:
-			project_stat.cmake_stat.size = project_stat.cmake_stat.size + (unsigned long long)file_size;
+			project_stat.lang_list[LANG_CMAKE].size = project_stat.lang_list[LANG_CMAKE].size + (unsigned long long)file_size;
 			project_stat.total_size = project_stat.total_size + (unsigned long long)file_size;
 			break;
 						
@@ -180,8 +180,8 @@ static void update_by_name(const char* file_rel_name, unsigned int name_length, 
 
 static void calculate_percent()
 {
-	lang_stat_t* parse_ptr = &project_stat.c_stat;
-	lang_stat_t* end_ptr = &project_stat.cmake_stat;
+	lang_stat_t* parse_ptr = &project_stat.lang_list[LANG_C];
+	lang_stat_t* end_ptr = &project_stat.lang_list[LANG_CMAKE];
 	
 	while( parse_ptr <= end_ptr )
 	{
