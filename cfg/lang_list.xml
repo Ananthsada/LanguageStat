@@ -1,0 +1,46 @@
+<?xml version ="1.0" encoding ="UTF-8" ?>
+<LanguageStats>
+	<Languages>
+		<Language name="C">
+			<extensions key="c"/>
+			<color key="\x1b[33m"/>
+		</Language>
+		<Language name="CPlusPlus">
+			<extensions key="cpp,cxx"/>
+			<color key="\x1b[34m"/>
+		</Language>
+		<Language name="Python">
+			<extensions key="py"/>
+			<color key="\x1b[32m"/>
+		</Language>		
+		<Language name="Shell">
+			<extensions key="sh"/>
+			<color key="\x1b[35m"/>
+		</Language>		
+		<Language name="Perl">
+			<extensions key="py"/>
+			<color key="\x1b[31m"/>
+		</Language>		
+		<Language name="Java">
+			<extensions key="java"/>
+			<color key="\x1b[36m"/>
+		</Language>		
+		<Language name="CMakeList">
+			<fullname key="CMakeLists.txt"/>
+			<color key="\x1b[93m"/>
+		</Language>		
+		<Language name="Makefile">
+			<fullname key="Makefile"/>
+			<extensions key="mk"/>
+			<color key="\x1b[94m"/>
+		</Language>		
+		<Language name="HTML">
+			<extensions key="html"/>
+			<color key="\x1b[91m"/>
+		</Language>		
+		<Language name="CSS">
+			<extensions key="css"/>
+			<color key="\x1b[92m"/>
+		</Language>		
+	</Languages>
+</LanguageStats>

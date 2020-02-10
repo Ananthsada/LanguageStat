@@ -5,3 +5,14 @@ Planned Activities
 3. Support other OS and other FileSystems.
 4. Develop Output Graph or some cool ui to display output we got 
 5. Add support for apt repo
+
+
+libxml2
+-----------
+sudo apt install libxml2
+sudo apt install libxml2-dev
+export LIBXML2_CFLAGS=`xml2-config --cflags`
+export LIBXML2_LIBS=`xml2-config --libs`
+
+export C_INCLUDE_PATH=/usr/include/libxml2:$C_INCLUDE_PATH
+gcc cfg_parser.c /usr/lib/x86_64-linux-gnu/libxml2.so
