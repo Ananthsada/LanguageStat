@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <errno.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <sys/types.h>
@@ -9,7 +12,8 @@
 		"#define LANG_CNT "
 
 #define PRE_DEF_STRUCT_STIRNG \
-		"project_stat_t project_stat[] = {"
+		"project_stat_t project_stat[] = { \
+				0,"
 		
 #define XML_CFG_FILE "/home/ananth/MyProject/LanguageStats/cfg/lang_list.xml"
 #define OUT_FILE "./cfg_list.c"
@@ -18,51 +22,96 @@ static int out_fd = -1;
 
 void cfg_init()
 {
-	out_fd = open( OUT_FILE, O_WRONLY | O_CREAT )
+	mode_t mode_l = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	int flags = O_WRONLY | O_CREAT | O_APPEND | O_TRUNC;
+	out_fd = open( OUT_FILE, flags, mode_l );
 	if( out_fd == -1 )
 	{
-		exit(0);
+		printf("File open failed %s\n",strerror(errno));
+		exit(-1);
+	}
+	else
+	{
+		printf("File created successfully\n");
 	}
 }
 
-static void print_element_names(xmlNode * a_node)
+static xmlNode* GetChildren(const xmlNode* node )
 {
-	xmlNode *cur_node = NULL;
-	for (cur_node = a_node; cur_node; cur_node = cur_node->next) 
+	xmlNode* ret_node = node->children;
+	
+	while( ret_node )
 	{
-		if (cur_node->type == XML_ELEMENT_NODE) 
+		if( ret_node->type != XML_ELEMENT_NODE ) 
 		{
-			printf("node type: Element, name: %s\n", cur_node->name);
+			ret_node = ret_node->next;
 		}
-		print_element_names(cur_node->children);
-	}
+		else
+		{
+			printf("Found element node %s\n", ret_node->name );
+			break;
+		}
+	}	
+	return ret_node;
 }
 
 static void parse_xml(xmlNode* root_node)
 {
 	xmlNode *curr_node = NULL;
+	xmlChar* string_l;
+	char LangExtn[30] = "Others";
+	char LangColor[10] = "\x1b[97m";
 	
 	if( root_node != NULL )
 	{
-		curr_node = root_node->child;
-		curr_node = curr_node ? curr_node->child : NULL;
-		while( curr_node )
+		printf("Root Element %s\n", root_node->name);
+		curr_node = GetChildren(root_node);
+		if( curr_node != NULL )
 		{
-			if( curr_node->name == "Language" )
+			curr_node = GetChildren(curr_node);
+			if( !curr_node )
 			{
-				xmlNode* innernode = NULL;
-				innernode = curr_node->child;
-				while( inner_node )
-				{
-					
-				}
-				curr_node = curr_node->next;
-			}
-			else
-			{
-				curr_node = NULL;
+				printf("Something is wrong\n");
 			}
 		}
+		while( curr_node )
+		{
+			if( !strcmp( (const char*)curr_node->name, "Language" ) )
+			{
+				string_l = xmlGetProp( curr_node, "name");
+				if( string_l )
+				{
+					printf("\nLanguage %s", string_l);
+					xmlFree(string_l);
+				}
+				xmlNode* inner_node = NULL;
+				inner_node = GetChildren(curr_node);
+				while( inner_node )
+				{
+					string_l = xmlGetProp(inner_node, "key");
+					if( string_l )
+					{
+						printf("Element %s : key %s, ",inner_node->name, string_l);
+						xmlFree(string_l);
+					}
+					inner_node = inner_node->next;
+				}
+				
+			}
+			curr_node = curr_node->next;
+		}
+	}
+	else
+	{
+		printf("Root Element NULL");
+	}
+}
+
+void cfg_exit()
+{
+	if( out_fd >= 0 )
+	{
+		close(out_fd);
 	}
 }
 
@@ -83,8 +132,10 @@ int main()
 
 	root_element = xmlDocGetRootElement(doc);
 	parse_xml(root_element);
-	/*print_element_names(root_element);
+	cfg_exit();
+	
 	xmlFreeDoc(doc);
-	xmlCleanupParser();*/	
+	xmlCleanupParser();	
+	
 	return 0;
 }
