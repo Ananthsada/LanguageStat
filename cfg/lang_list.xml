@@ -5,7 +5,7 @@
 			<extensions key="c"/>
 			<color key="\x1b[33m"/>
 		</Language>
-		<Language name="CPlusPlus">
+		<Language name="CPP">
 			<extensions key="cpp,cxx"/>
 			<color key="\x1b[34m"/>
 		</Language>
